@@ -1,0 +1,49 @@
+apiVersion: tekton.dev/v1beta1
+kind: EventListener
+metadata:
+  name:
+spec:
+  serviceAccountName: pipeline
+  triggers:
+  - binding:
+      name:cd-binding
+    template:
+      name:cd-template
+
+---
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerBinding
+metadata:
+  name:
+spec:
+  params:
+  - name: repository
+    value: "$(body.repository.url)"
+
+---
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name:
+spec:
+  params:
+  - name: repository
+    description: the url of the git repo
+    default: ""
+  - name: branch
+    description: branch
+    default: "main"
+  resourceTemplates:
+  - apiVersion: tekton.dev/
+    kind: PipelineRun
+    metadata:
+      generateName: cd-pipeline-run
+    spec:
+      serviceAccountName:
+      pipelineRef:
+        name:
+      params:
+      -	name: repo-url
+	value: $(tt.params.repository)"
+      - name: branch
+	value: $(tt.params.branch)"
