@@ -1,0 +1,10 @@
+apiVersion: tekton.dev/v1beta1
+kind: Workflow
+metadata:
+  name: CI workflow
+spec:
+  triggers:
+  - binding:
+      name:
+  - template:
+      name:
