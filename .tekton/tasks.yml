@@ -43,11 +43,11 @@ spec:
     - name: source
   params:
     - name: args
-      description: Args to pass to nose
+      description: Arguments to pass to nose
       type: string 
       default: "-v"
   steps:
-    - name: nosetest
+    - name: nosetests
       image: python:3.9-slim
       workingDir: $(workspaces.source.path)
       script: |
